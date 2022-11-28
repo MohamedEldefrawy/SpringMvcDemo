@@ -1,20 +1,16 @@
-package com.vodafone.model;
+package com.vodafone.model.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
+public class CreateUser {
+    @NotBlank
     private String firstName;
-    @Column
+    @NotBlank
     private String lastName;
-
-    @Column
+    @NotNull()
+    @Min(value = 2000)
     private Integer salary;
 
     public String getFirstName() {
@@ -43,18 +39,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "CreateUser{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", salary=" + salary +
                 '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

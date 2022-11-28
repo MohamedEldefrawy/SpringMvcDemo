@@ -1,6 +1,8 @@
 package com.vodafone.controller;
 
 import com.vodafone.model.User;
+import com.vodafone.model.dto.CreateUser;
+import com.vodafone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-
-import com.vodafone.service.UserService;
-
-import javax.validation.Valid;
 
 
 @Controller
@@ -30,19 +29,23 @@ public class RegistrationController {
 
     @GetMapping("registration.htm")
     public String registration(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new CreateUser());
         return "registration";
     }
 
     @PostMapping("registration.htm")
-    public String addUser(@Valid  @ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String addUser(@Valid @ModelAttribute("user") CreateUser user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, Object> model = bindingResult.getModel();
             System.out.println(model);
             return "registration";
         }
-        System.out.println(user);
-        userService.save(user);
+
+        User newUser = new User();
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setSalary(user.getSalary());
+        userService.save(newUser);
         return "redirect:/users/users.htm";
     }
 
