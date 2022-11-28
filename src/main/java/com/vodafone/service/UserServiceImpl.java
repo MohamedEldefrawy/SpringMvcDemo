@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
-            return session.get(User.class, user.getFirstName());
+            return user;
         } catch (HibernateException e) {
             e.printStackTrace();
             return null;
